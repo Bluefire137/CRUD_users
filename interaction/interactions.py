@@ -59,6 +59,7 @@ class DbInteraction:
             raise UserNotFoundException
 
 
+
 if __name__ == '__main__':
     db = DbInteraction(
         host='127.0.0.1',
