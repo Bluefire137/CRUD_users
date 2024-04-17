@@ -1,6 +1,6 @@
 > Flask, SQLAlchemy, PostgreSQL
-> Установить зависимости: flask, configparser, threading, sqlalchemy
 
+Установить зависимости: flask, configparser, threading, sqlalchemy
 
 Запустить interactions.py для создания БД и таблиц
 
