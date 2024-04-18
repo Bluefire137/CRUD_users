@@ -27,7 +27,7 @@ class Server:
         self.app.add_url_rule('/', view_func=self.get_home)
         self.app.add_url_rule('/home', view_func=self.get_home)
         self.app.add_url_rule('/add_user_info', view_func=self.add_user_info, methods=['POST'])
-        self.app.add_url_rule('/get_user_info', view_func=self.get_user_info, methods=['GET'])
+        self.app.add_url_rule('/get_user_info/<string:username>', view_func=self.get_user_info, methods=['GET'])
         self.app.add_url_rule('/edit_user_info', view_func=self.edit_user_info, methods=['PUT'])
 
         self.app.register_error_handler(404, self.page_not_found)
