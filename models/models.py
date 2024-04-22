@@ -24,3 +24,8 @@ class Dishes(Base):
     user_id = Column(Integer, ForeignKey(f'{User.__tablename__}.{User.id.name}'), nullable=False)
     dish = Column(VARCHAR(100), nullable=True)
     user = relationship('User', backref='dishes')
+'''
+class Recipes(Base):
+    __tablename__ = 'recipes'
+    id_recipe = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
+    id_dish = Column()'''

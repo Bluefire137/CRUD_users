@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from exception.exception import UserNotFoundException
 from models.models import Base, User
 
-
+# подключение к базе данных PostgreSQL с помощью SQLAlchemy
 class DbInteraction:
 
     def __init__(self, host, port, user, password, db_name, rebuild_db=False):
@@ -20,6 +20,17 @@ class DbInteraction:
     def create_table_dishes(self):
         Base.metadata.create_all(self.engine)
 
+
+    def get_user_info(self, username):
+        Session = sessionmaker(bind=self.engine)
+        session = Session()
+        user = session.query(User).filter_by(username=username).first()
+        if user:
+            session.expire_all() #заставляет сессию обновить все объекты, удаляет кэш
+            return {'username': user.username, 'email': user.email, 'password': user.password}
+        else:
+            raise UserNotFoundException('User not found!')
+
     def add_user_info(self, username, email, password):
         user = User(
             username=username,
@@ -31,16 +42,6 @@ class DbInteraction:
         session.add(user)
         session.commit()
         return self.get_user_info(username)
-
-    def get_user_info(self, username):
-        Session = sessionmaker(bind=self.engine)
-        session = Session()
-        user = session.query(User).filter_by(username=username).first()
-        if user:
-            session.expire_all()
-            return {'username': user.username, 'email': user.email, 'password': user.password}
-        else:
-            raise UserNotFoundException('User not found!')
 
     def edit_user_info(self, username, new_username=None, new_email=None, new_password=None):
         Session = sessionmaker(bind=self.engine)
