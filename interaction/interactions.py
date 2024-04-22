@@ -59,6 +59,14 @@ class DbInteraction:
         else:
             raise UserNotFoundException
 
+    def delete_user_info(self, username):
+        Session = sessionmaker(bind=self.engine)
+        session = Session()
+        user_to_delete = session.query(User).filter_by(username=username).first()
+        session.delete(user_to_delete)
+        session.commit()
+        return f'{username} is deleted!'
+
 
 
 if __name__ == '__main__':

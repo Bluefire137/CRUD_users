@@ -29,6 +29,7 @@ class Server:
         self.app.add_url_rule('/get_user_info/<string:username>', view_func=self.get_user_info, methods=['GET'])
         self.app.add_url_rule('/add_user_info', view_func=self.add_user_info, methods=['POST'])
         self.app.add_url_rule('/edit_user_info/<string:username>', view_func=self.edit_user_info, methods=['PUT'])
+        self.app.add_url_rule('/delete_user_info/<string:username>', view_func=self.delete_user_info, methods=['DELETE'])
 
         self.app.register_error_handler(404, self.page_not_found)
 
@@ -70,7 +71,7 @@ class Server:
             password=password,
             email=email
         )
-        return f'Success added {username}', 201
+        return f'Successfully added {username}', 201
 
 
     def edit_user_info(self, username):
@@ -84,7 +85,11 @@ class Server:
             new_password=new_password,
             new_email=new_email
         )
-        return f'Success!', 200
+        return f'Successfully edited! {username}', 200
+
+    def delete_user_info(self, username):
+        self.db_interaction.delete_user_info(username)
+        return f'{username} is deleted!', 200
 
 
 if __name__ == '__main__':
@@ -98,16 +103,6 @@ if __name__ == '__main__':
     db_user = config['DEFAULT']['DB_USER']
     db_password = config['DEFAULT']['DB_PASSWORD']
     db_name = config['DEFAULT']['DB_NAME']
-
-    '''parser = argparse.ArgumentParser()
-    parser.add_argument('--config', type = str, dest = 'config')
-
-    args = parser.parse_args()
-
-    config = config_parser(args.config)
-
-    server_host = config['SERVER_HOST']
-    server_port = config['SERVER_PORT']'''
 
     server = Server(
         host=server_host,
