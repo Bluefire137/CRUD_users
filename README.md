@@ -1,11 +1,12 @@
 > Flask, SQLAlchemy, PostgreSQL
 
+Проект по выводу, добавлению, модификации записей о пользователях в PostgreSQL
+
 Установить зависимости: flask, configparser, threading, sqlalchemy
 
 Запустить interactions.py для создания БД и таблиц
 
 Запустить server.py
-
 
 Выполнить запрос из Postman по типу:
 
@@ -18,9 +19,9 @@
 "email":"uzver_mail"
 }
 
-• http://127.0.0.1:5005/edit_user_info/user_test c Header: Content-type Application/json и Body:
+• PUT http://127.0.0.1:5005/edit_user_info/user_test c Header: Content-type Application/json и Body:
 {
-    "username": "volga",
-    "password": "pass",
-    "email": "volga_mail"
+"username":"uzver1",
+"password":"pass",
+"email":"uzver1_mail"
 }
