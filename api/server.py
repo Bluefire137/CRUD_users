@@ -26,7 +26,8 @@ class Server:
         self.app.add_url_rule('/shutdown', view_func=self.shutdown)
         self.app.add_url_rule('/', view_func=self.get_home)
         self.app.add_url_rule('/home', view_func=self.get_home)
-        self.app.add_url_rule('/get_user_info/<string:username>', view_func=self.get_user_info, methods=['GET'])
+        self.app.add_url_rule('/get_all_username/', view_func=self.get_all_username)
+        self.app.add_url_rule('/get_user_info/<string:username>', view_func=self.get_user_info)
         self.app.add_url_rule('/add_user_info', view_func=self.add_user_info, methods=['POST'])
         self.app.add_url_rule('/edit_user_info/<string:username>', view_func=self.edit_user_info, methods=['PUT'])
         self.app.add_url_rule('/delete_user_info/<string:username>', view_func=self.delete_user_info, methods=['DELETE'])
@@ -52,13 +53,15 @@ class Server:
     def get_home(self):
         return 'Hello, api-server!'
 
+    def get_all_username(self):
+        return self.db_interaction.get_all_username(), 200
 
     def get_user_info(self, username):
         try:
             user_info = self.db_interaction.get_user_info(username)
             return user_info, 200
         except UserNotFoundException:
-            abort(404, description='User not found')
+            abort(542, description='User not found')
 
 
     def add_user_info(self):

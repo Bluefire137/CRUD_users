@@ -1,8 +1,10 @@
+from flask import jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from exception.exception import UserNotFoundException
 from models.models import Base, User
+import pprint
 
 # подключение к базе данных PostgreSQL с помощью SQLAlchemy
 class DbInteraction:
@@ -26,10 +28,20 @@ class DbInteraction:
         session = Session()
         user = session.query(User).filter_by(username=username).first()
         if user:
-            session.expire_all() #заставляет сессию обновить все объекты, удаляет кэш
+            session.expire_all()
             return {'username': user.username, 'email': user.email, 'password': user.password}
         else:
             raise UserNotFoundException('User not found!')
+
+    def get_all_username(self):
+        Session = sessionmaker(bind=self.engine)
+        session = Session()
+        all_users = session.query(User.username).all()
+        user_list = []
+        for row_user in all_users:
+            user_list.append(row_user[0])
+        return user_list
+
 
     def add_user_info(self, username, email, password):
         user = User(
